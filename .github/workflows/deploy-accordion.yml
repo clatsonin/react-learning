@@ -1,14 +1,15 @@
-name: Deploy Accordion App
+name: Deploy 01-accordion
 
 on:
   push:
     paths:
       - '01-accordion/**'
+      - '.github/workflows/deploy-accordion.yml'
     branches:
       - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -18,19 +19,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Install Dependencies
+      - name: Install dependencies
         run: npm install
 
       - name: Build
         run: npm run build
 
-      - name: Deploy
+      - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+          publish_dir: ./01-accordion/build
+          destination_dir: 01-accordion
